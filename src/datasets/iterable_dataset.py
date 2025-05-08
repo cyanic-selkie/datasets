@@ -241,6 +241,10 @@ class ExamplesIterable(_BaseExamplesIterable):
     def num_shards(self) -> int:
         return _number_of_shards_in_gen_kwargs(self.kwargs)
 
+    @property
+    def n_shards(self) -> int:
+        return self.num_shards
+
 
 class ShuffledDataSourcesExamplesIterable(ExamplesIterable):
     def __init__(
@@ -344,6 +348,10 @@ class ArrowExamplesIterable(_BaseExamplesIterable):
     @property
     def num_shards(self) -> int:
         return _number_of_shards_in_gen_kwargs(self.kwargs)
+
+    @property
+    def n_shards(self) -> int:
+        return self.num_shards
 
 
 class ShuffledDataSourcesArrowExamplesIterable(ArrowExamplesIterable):
@@ -551,6 +559,10 @@ class RebatchedArrowExamplesIterable(_BaseExamplesIterable):
     def num_shards(self) -> int:
         return self.ex_iterable.num_shards
 
+    @property
+    def n_shards(self) -> int:
+        return self.num_shards
+
 
 class SelectColumnsIterable(_BaseExamplesIterable):
     def __init__(self, ex_iterable: _BaseExamplesIterable, column_names: list[str]):
@@ -595,6 +607,10 @@ class SelectColumnsIterable(_BaseExamplesIterable):
     @property
     def num_shards(self) -> int:
         return self.ex_iterable.num_shards
+
+    @property
+    def n_shards(self) -> int:
+        return self.num_shards
 
 
 class StepExamplesIterable(_BaseExamplesIterable):
@@ -641,6 +657,10 @@ class StepExamplesIterable(_BaseExamplesIterable):
     @property
     def num_shards(self) -> int:
         return self.ex_iterable.num_shards
+
+    @property
+    def n_shards(self) -> int:
+        return self.num_shards
 
 
 class CyclingMultiSourcesExamplesIterable(_BaseExamplesIterable):
@@ -736,6 +756,10 @@ class CyclingMultiSourcesExamplesIterable(_BaseExamplesIterable):
     def num_shards(self) -> int:
         return min(ex_iterable.num_shards for ex_iterable in self.ex_iterables)
 
+    @property
+    def n_shards(self) -> int:
+        return self.num_shards
+
     def shard_data_sources(
         self, num_shards: int, index: int, contiguous=True
     ) -> "CyclingMultiSourcesExamplesIterable":
@@ -811,6 +835,10 @@ class VerticallyConcatenatedMultiSourcesExamplesIterable(_BaseExamplesIterable):
     @property
     def num_shards(self) -> int:
         return min(ex_iterable.num_shards for ex_iterable in self.ex_iterables)
+
+    @property
+    def n_shards(self) -> int:
+        return self.num_shards
 
     def shard_data_sources(
         self, num_shards: int, index: int, contiguous=True
@@ -899,6 +927,10 @@ class HorizontallyConcatenatedMultiSourcesExamplesIterable(_BaseExamplesIterable
     @property
     def num_shards(self) -> int:
         return 1
+
+    @property
+    def n_shards(self) -> int:
+        return self.num_shards
 
     def shard_data_sources(
         self, num_shards: int, index: int, contiguous=True
@@ -1388,6 +1420,10 @@ class MappedExamplesIterable(_BaseExamplesIterable):
     def num_shards(self) -> int:
         return self.ex_iterable.num_shards
 
+    @property
+    def n_shards(self) -> int:
+        return self.num_shards
+
 
 def _add_mask(
     input: Union[dict, pa.Table],
@@ -1490,6 +1526,10 @@ class FilteredExamplesIterable(MappedExamplesIterable):
     def num_shards(self) -> int:
         return self.ex_iterable.num_shards
 
+    @property
+    def n_shards(self) -> int:
+        return self.num_shards
+
 
 class BufferShuffledExamplesIterable(_BaseExamplesIterable):
     def __init__(self, ex_iterable: _BaseExamplesIterable, buffer_size: int, generator: np.random.Generator):
@@ -1560,6 +1600,10 @@ class BufferShuffledExamplesIterable(_BaseExamplesIterable):
     @property
     def num_shards(self) -> int:
         return self.ex_iterable.num_shards
+
+    @property
+    def n_shards(self) -> int:
+        return self.num_shards
 
 
 class SkipExamplesIterable(_BaseExamplesIterable):
@@ -1636,6 +1680,10 @@ class SkipExamplesIterable(_BaseExamplesIterable):
     def num_shards(self) -> int:
         return self.ex_iterable.num_shards
 
+    @property
+    def n_shards(self) -> int:
+        return self.num_shards
+
 
 class RepeatExamplesIterable(_BaseExamplesIterable):
     """
@@ -1684,8 +1732,12 @@ class RepeatExamplesIterable(_BaseExamplesIterable):
         )
 
     @property
+    def num_shards(self) -> int:
+        return self.ex_iterable.num_shards
+
+    @property
     def n_shards(self) -> int:
-        return self.ex_iterable.n_shards
+        return self.num_shards
 
 
 class TakeExamplesIterable(_BaseExamplesIterable):
@@ -1770,7 +1822,7 @@ class TakeExamplesIterable(_BaseExamplesIterable):
 
     @property
     def n_shards(self) -> int:
-        return self.ex_iterable.num_shards
+        return self.num_shards
 
 
 def _apply_feature_types_on_example(
@@ -1915,6 +1967,10 @@ class FormattedExamplesIterable(_BaseExamplesIterable):
     @property
     def num_shards(self) -> int:
         return self.ex_iterable.num_shards
+
+    @property
+    def n_shards(self) -> int:
+        return self.num_shards
 
 
 @dataclass
