@@ -1766,6 +1766,10 @@ class TakeExamplesIterable(_BaseExamplesIterable):
     def num_shards(self) -> int:
         return self.ex_iterable.num_shards
 
+    @property
+    def n_shards(self) -> int:
+        return self.ex_iterable.num_shards
+
 
 def _apply_feature_types_on_example(
     example: dict, features: Features, token_per_repo_id: dict[str, Union[str, bool, None]]
